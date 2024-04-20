@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string("phone")->fulltext();
             $table->string("email")->unique()->fulltext();
             $table->string("website")->unique()->fulltext()->nullable();
+            $table->tinyInteger("status")->default(0);
 
             $table->foreignId("created_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
