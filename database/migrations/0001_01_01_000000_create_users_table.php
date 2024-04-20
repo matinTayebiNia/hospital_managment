@@ -15,16 +15,24 @@ return new class extends Migration {
             $table->string('title');
             $table->string('name');
             $table->string('username');
-            $table->tinyInteger('status')->default(0);
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->enum("gender", ["Male", "Female", "Not to Say"]);
+            $table->date("dob");
+            $table->integer("age")->default(0);
+            $table->integer("religion")->nullable();
+            $table->text("address_1")->nullable();
+            $table->text("address_2")->nullable();
+            $table->string("image")->nullable();
+
             $table->foreignId("created_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("updated_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->tinyInteger('status')->default(0);
+            $table->rememberToken();
             $table->timestamps();
         });
 
