@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Specialist;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +14,13 @@ return new class extends Migration {
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string("title")->fulltext()->comment(" such as Mr. Dr");
-            $table->string("name");
             $table->string("about_doctor")->nullable();
-            $table->string("about_doctor")->nullable();
-            $table->string("about_doctor")->nullable();
-
+            $table->integer("charge")->default(0);
+            $table->string("experience")->nullable();
+            $table->foreignIdFor(Specialist::class)->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("created_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("updated_by_id")->nullable()->constrained("users")
