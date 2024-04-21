@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Patient;
-use App\Models\PatientVisit;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diagnoses', function (Blueprint $table) {
+        Schema::create('test_types', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("icd_10");
+            $table->integer("price");
+            $table->integer("discount");
             $table->foreignId("created_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("updated_by_id")->nullable()->constrained("users")
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diagnoses');
+        Schema::dropIfExists('test_types');
     }
 };
