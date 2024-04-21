@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string("heart_rate")->nullable();
             $table->string("urine_output")->nullable();
             $table->string("blood_sugar_f")->nullable();
+            $table->string("blood_sugar_r")->nullable();
             $table->string("spo_2")->nullable();
             $table->string("avpu")->nullable();
             $table->string("trauma")->nullable();
