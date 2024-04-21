@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create('allergies', function (Blueprint $table) {
             $table->id();
             $table->string("name")->nullable();
-            $table->tinyInteger("status")->default(0);
             $table->foreignIdFor(Patient::class)->nullable()->constrained()
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(PatientVisit::class)->nullable()->constrained()
