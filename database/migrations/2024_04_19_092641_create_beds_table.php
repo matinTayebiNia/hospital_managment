@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('beds', function (Blueprint $table) {
             $table->id();
+            $table->string("bed_no")->nullable();
+            $table->string("name")->nullable();
+            $table->integer("price")->default(0);
+            $table->tinyInteger("status")->default(0);
+            $table->string("image")->nullable();
+            $table->foreignIdFor(\App\Models\BedType::class)->nullable()->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Room::class)->nullable()->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("created_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("updated_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

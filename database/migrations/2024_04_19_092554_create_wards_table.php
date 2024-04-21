@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('wards', function (Blueprint $table) {
             $table->id();
+            $table->string("code")->nullable();
+            $table->string("name")->nullable();
+            $table->tinyInteger("status")->default(0);
+            $table->foreignId("created_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("updated_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BillingTransaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,14 @@ return new class extends Migration
     {
         Schema::create('cheque_details', function (Blueprint $table) {
             $table->id();
+            $table->string("number")->default(0);
+            $table->date("date")->nullable();
+            $table->foreignIdFor(BillingTransaction::class)->nullable()->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("created_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("updated_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }
