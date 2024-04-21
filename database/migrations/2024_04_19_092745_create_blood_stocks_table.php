@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('blood_stocks', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\BloodBank::class)->nullable()->constrained()
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("created_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("updated_by_id")->nullable()->constrained("users")
+                ->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

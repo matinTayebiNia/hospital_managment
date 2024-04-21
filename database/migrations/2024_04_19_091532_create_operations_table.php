@@ -24,8 +24,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Patient::class)->constrained()
                 ->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(User::class)->constrained()
-                ->onDelete("null")->cascadeOnUpdate();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate();
             $table->foreignId("created_by_id")->nullable()->constrained("users")
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("updated_by_id")->nullable()->constrained("users")
