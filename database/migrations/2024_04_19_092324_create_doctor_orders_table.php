@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('doctor_orders', function (Blueprint $table) {
             $table->id();
-            $table->string("order")->nullable();
+            $table->string("order_no")->nullable();
             $table->tinyInteger("order_type")->default(0);
             $table->foreignIdFor(PatientVisit::class)->nullable()->constrained()
                 ->cascadeOnUpdate()->cascadeOnDelete();

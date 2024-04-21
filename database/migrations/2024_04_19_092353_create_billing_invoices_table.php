@@ -12,10 +12,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('billing_invoice_details', function (Blueprint $table) {
+        Schema::create('billing_invoices', function (Blueprint $table) {
             $table->id();
-            $table->integer("item_amount")->default(0);
-            $table->string("item_total_amount")->nullable();
+            $table->string("invoice_number");
+            $table->integer("total")->default(0);
+            $table->integer("pending_amount")->default(0);
+            $table->integer("payment_amount")->default(0);
+            $table->tinyInteger("mood")->default(0);
+            $table->string("note")->nullable();
+            $table->string("discount_type")->nullable();
+            $table->integer("discount_amount")->default(0);
+            $table->string("discount_note")->nullable();
+            $table->integer("tax")->default(0);
+            $table->integer("additional_fee")->default(0);
+            $table->tinyInteger("status")->default(0);
             $table->foreignIdFor(BillingInvoice::class)->nullable()->constrained()
                 ->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId("created_by_id")->nullable()->constrained("users")
@@ -31,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('billing_invoice_details');
+        Schema::dropIfExists('billing_invoices');
     }
 };
