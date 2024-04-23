@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
+use App\Http\HttpHelper\Interfaces\UpdatableAndCreatableInterface;
+use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class BedType extends Model
+class BedType extends Model implements UpdatableAndCreatableInterface
 {
-    use HasFactory, UpdatableAndCreatable;
+    use HasFactory, UpdatableAndCreatableTrait;
 
     protected $fillable = [
         "status",

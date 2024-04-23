@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
+use App\Http\HttpHelper\Interfaces\UpdatableAndCreatableInterface;
+use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Allergy extends Model
+class Allergy extends Model implements UpdatableAndCreatableInterface
 {
-    use HasFactory, UpdatableAndCreatable;
+    use HasFactory, UpdatableAndCreatableTrait;
 
     protected $fillable = [
         "name",
@@ -27,7 +28,7 @@ class Allergy extends Model
 
     public function patientVisit(): BelongsTo
     {
-     return $this->belongsTo(PatientVisit::class);
+        return $this->belongsTo(PatientVisit::class);
     }
 
     public function user(): BelongsTo
