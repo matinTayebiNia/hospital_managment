@@ -2,10 +2,29 @@
 
 namespace App\Models;
 
+use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BillingInvoice extends Model
 {
-    use HasFactory;
+    use HasFactory, UpdatableAndCreatable;
+
+    protected $fillable = [
+        "invoice_number",
+        "total",
+        "pending_amount",
+        "payment_amount",
+        "note",
+        "mood",
+        "discount_type",
+        "discount_amount",
+        "discount_note",
+        "tax",
+        "additional_fee",
+        "status",
+        "billing_invoice_id",
+        "created_by_id",
+        "updated_by_id"
+    ];
 }

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SampleCollection extends Model
 {
-    use HasFactory;
+    use HasFactory,UpdatableAndCreatable;
 
     protected $fillable = [
         "sample_code",
