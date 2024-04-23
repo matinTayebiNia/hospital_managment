@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Room extends Model
 {
@@ -22,6 +23,16 @@ class Room extends Model
         "created_by_id",
         "updated_by_id",
     ];
+
+    public function roomType(): BelongsTo
+    {
+        return $this->belongsTo(RoomType::class);
+    }
+
+    public function ward(): BelongsTo
+    {
+        return $this->belongsTo(Ward::class);
+    }
 
 
 

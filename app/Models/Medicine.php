@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Medicine extends Model
 {
@@ -22,4 +23,9 @@ class Medicine extends Model
         "created_by_id",
         "updated_by_id"
     ];
+
+    public function purchase(): BelongsTo
+    {
+        return $this->belongsTo(Purchase::class);
+    }
 }
