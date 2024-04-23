@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Http\HttpHelper\Traits\UpdatableAndCreatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class HospitalSetting extends Model
 {
-    use HasFactory, UpdatableAndCreatable;
+    use HasFactory;
 
     protected $fillable = [
         "name",
@@ -43,7 +42,5 @@ class HospitalSetting extends Model
         "invoice_test_number",
         "taxes",
         "discount",
-        "created_by_id",
-        "updated_by_id"
     ];
 }

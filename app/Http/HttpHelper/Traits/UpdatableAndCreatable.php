@@ -2,6 +2,8 @@
 
 namespace App\Http\HttpHelper\Traits;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 trait UpdatableAndCreatable
@@ -22,5 +24,15 @@ trait UpdatableAndCreatable
         }
     }
 
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "created_by_id", "id");
+    }
+
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "updated_by_id", "id");
+
+    }
 
 }

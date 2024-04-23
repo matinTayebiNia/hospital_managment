@@ -36,6 +36,6 @@ class SampleCollection extends Model
 
     public function ApprovedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class,"approved_by_id");
+        return $this->belongsTo(User::class,"approved_by_id","id");
     }
 }
