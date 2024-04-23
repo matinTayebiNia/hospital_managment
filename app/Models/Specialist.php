@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Specialist extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "name",
+        "code",
+        "status",
+        "created_by_id",
+        "updated_by_id"
+    ];
+
 }
