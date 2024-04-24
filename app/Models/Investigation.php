@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Investigation extends Model implements UpdatableAndCreatableInterface
 {
@@ -43,5 +44,10 @@ class Investigation extends Model implements UpdatableAndCreatableInterface
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function sampleCollections(): HasMany
+    {
+        return $this->hasMany(SampleCollection::class);
     }
 }

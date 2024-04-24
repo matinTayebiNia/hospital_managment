@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model implements UpdatableAndCreatableInterface
 {
@@ -53,5 +54,60 @@ class Patient extends Model implements UpdatableAndCreatableInterface
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function allergies(): HasMany
+    {
+        return $this->hasMany(Allergy::class);
+    }
+
+    public function bloodBanks(): HasMany
+    {
+        return $this->hasMany(BloodBank::class);
+    }
+
+    public function bloodRequests(): HasMany
+    {
+        return $this->hasMany(BloodRequest::class);
+    }
+
+    public function immunizations(): HasMany
+    {
+        return $this->hasMany(Immunization::class);
+    }
+
+    public function investigations(): HasMany
+    {
+        return $this->hasMany(Investigation::class);
+    }
+
+    public function medicalCertificates(): HasMany
+    {
+        return $this->hasMany(MedicalCertificate::class);
+    }
+
+    public function operations(): HasMany
+    {
+        return $this->hasMany(Operation::class);
+    }
+
+    public function patientVisits(): HasMany
+    {
+        return $this->hasMany(PatientVisit::class);
+    }
+
+    public function prescriptions(): HasMany
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    public function presentingComplains(): HasMany
+    {
+        return $this->hasMany(PresentingComplain::class);
+    }
+
+    public function vitals(): HasMany
+    {
+        return $this->hasMany(Vital::class);
     }
 }

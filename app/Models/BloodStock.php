@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class BloodStock extends Model implements UpdatableAndCreatableInterface
 {
@@ -21,5 +22,10 @@ class BloodStock extends Model implements UpdatableAndCreatableInterface
     public function bloodBank(): BelongsTo
     {
         return $this->belongsTo(BloodBank::class);
+    }
+
+    public function bloodStockDetails(): HasOne
+    {
+        return $this->hasOne(BloodStockDetail::class);
     }
 }

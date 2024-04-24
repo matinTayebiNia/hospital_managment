@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Purchase extends Model implements UpdatableAndCreatableInterface
 {
@@ -33,6 +34,11 @@ class Purchase extends Model implements UpdatableAndCreatableInterface
         "created_by_id",
         "updated_by_id"
     ];
+
+    public function medicines(): HasMany
+    {
+        return $this->hasMany(Medicine::class);
+    }
 
     public function supplier(): BelongsTo
     {

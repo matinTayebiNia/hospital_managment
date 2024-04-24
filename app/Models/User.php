@@ -7,6 +7,8 @@ use App\Http\HttpHelper\Interfaces\UpdatableAndCreatableInterface;
 use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -85,5 +87,75 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
         return empty($value) ? self::query() : self::where("id", $value)
             ->orWhere("name", "LIKE", "%{$value}%")
             ->orWhere("email", "LIKE", "%{$value}%");
+    }
+
+    public function allergies(): HasMany
+    {
+        return $this->hasMany(Allergy::class);
+    }
+
+    public function bloodBanks(): HasMany
+    {
+        return $this->hasMany(BloodBank::class);
+    }
+
+    public function doctorInfo(): HasOne
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function nurseInfo(): HasOne
+    {
+        return $this->hasOne(Nurse::class);
+    }
+
+    public function immunizations(): HasMany
+    {
+        return $this->hasMany(Immunization::class);
+    }
+
+    public function investigations(): HasMany
+    {
+        return $this->hasMany(Investigation::class);
+    }
+
+    public function medicalCertificates(): HasMany
+    {
+        return $this->hasMany(MedicalCertificate::class);
+    }
+
+    public function operations(): HasMany
+    {
+        return $this->hasMany(Operation::class);
+    }
+
+    public function patients(): HasMany
+    {
+        return $this->hasMany(Patient::class);
+    }
+
+    public function patientVisits(): HasMany
+    {
+        return $this->hasMany(PatientVisit::class);
+    }
+
+    public function prescriptions(): HasMany
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    public function presentingComplains(): HasMany
+    {
+        return $this->hasMany(PresentingComplain::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    public function vitals(): HasMany
+    {
+        return $this->hasMany(Vital::class);
     }
 }

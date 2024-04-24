@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DoctorOrder extends Model implements UpdatableAndCreatableInterface
 {
@@ -26,13 +27,20 @@ class DoctorOrder extends Model implements UpdatableAndCreatableInterface
     {
         return $this->belongsTo(PatientVisit::class);
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, "approved_by_id", "id");
+    }
+
+    public function billings(): HasMany
+    {
+        return $this->hasMany(Billing::class);
     }
 
 

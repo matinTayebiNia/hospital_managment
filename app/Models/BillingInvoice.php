@@ -7,6 +7,7 @@ use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BillingInvoice extends Model implements UpdatableAndCreatableInterface
 {
@@ -33,5 +34,15 @@ class BillingInvoice extends Model implements UpdatableAndCreatableInterface
     public function billingInvoice(): BelongsTo
     {
         return $this->belongsTo(BillingInvoice::class);
+    }
+
+    public function billingTransactions(): HasMany
+    {
+        return $this->hasMany(BillingTransaction::class);
+    }
+
+    public function billingInvoiceDetails(): HasMany
+    {
+        return $this->hasMany(BillingInvoiceDetail::class);
     }
 }
