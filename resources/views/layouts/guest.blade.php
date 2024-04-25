@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="fontiran.com:license" content="Y68A9">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{env("app_name")}}</title>
+    <!-- Bootstrap -->
+    <link href="{{asset("/vendor/panel/css/bootstrap.min.css")}}" rel="stylesheet">
+    <link href="{{asset("/vendor/panel/css/bootstrap-rtl.min.css")}}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{asset("/vendor/panel/css/font-awesome.min.css")}}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{asset("/vendor/panel/css/nprogress.css")}}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{asset("/vendor/panel/css/bootstrap-progressbar-3.3.4.min.css")}}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{asset("/vendor/panel/css/green.css")}}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{asset("/vendor/panel/css/daterangepicker.css")}}" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Custom Theme Style -->
+    <link href="{{asset("/vendor/panel/css/custom.min.css")}}" rel="stylesheet">
+    @livewireStyles
+</head>
+<body class=" {{$classes ?? ""}} ">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+{{ $slot }}
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
-        </div>
-    </body>
+</body>
 </html>
