@@ -7,10 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="fontiran.com:license" content="Y68A9">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{env("app_name")}}</title>
+
     <!-- Bootstrap -->
     <link href="{{asset("/vendor/panel/css/bootstrap.min.css")}}" rel="stylesheet">
+
     <link href="{{asset("/vendor/panel/css/bootstrap-rtl.min.css")}}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{asset("/vendor/panel/css/font-awesome.min.css")}}" rel="stylesheet">
@@ -31,9 +34,7 @@
 
 <div class="container body">
     <div class="main_container">
-        <x-sidebar-panel>
-
-        </x-sidebar-panel>
+        <x-sidebar-panel></x-sidebar-panel>
         <!-- top navigation -->
         <x-navigation-panel></x-navigation-panel>
         <!-- /top navigation -->

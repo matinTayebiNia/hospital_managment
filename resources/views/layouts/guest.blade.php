@@ -31,5 +31,6 @@
 
 {{ $slot }}
 
+@yield("scripts")
 </body>
 </html>
