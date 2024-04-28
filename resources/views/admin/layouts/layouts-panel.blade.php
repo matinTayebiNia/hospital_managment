@@ -28,19 +28,23 @@
 
     <!-- Custom Theme Style -->
     <link href="{{asset("/vendor/panel/css/custom.min.css")}}" rel="stylesheet">
+
     @livewireStyles
 </head>
 <body class="nav-md">
 
 <div class="container body">
     <div class="main_container">
-        <x-sidebar-panel></x-sidebar-panel>
+        <x-sidebar-panel/>
         <!-- top navigation -->
-        <x-navigation-panel></x-navigation-panel>
+        <x-navigation-panel/>
         <!-- /top navigation -->
         <!-- /header content -->
         <!-- page content -->
-        {!! $slot !!}
+        <div class="right_col" role="main" style="min-height: 1396.8px;">
+
+            {!! $slot !!}
+        </div>
         <!-- /page content -->
         <!-- footer content -->
         <footer class="hidden-print">

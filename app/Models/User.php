@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\HttpHelper\Interfaces\UpdatableAndCreatableInterface;
 use App\Http\HttpHelper\Traits\UpdatableAndCreatableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,10 +14,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @method static User find(int $int)
+ */
 class User extends Authenticatable implements UpdatableAndCreatableInterface
 {
-    use HasFactory, Notifiable, UpdatableAndCreatableTrait;
+    use HasFactory, Notifiable, UpdatableAndCreatableTrait, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -63,6 +69,10 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
         ];
     }
 
+    public static function getRoles(): mixed
+    {
+        return Role::latest()->get(['id', 'name', "as_name"]);
+    }
 
     //name transformer
     protected function name(): Attribute
@@ -82,9 +92,9 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
     }
 
     // search functionality
-    public function search($value): mixed
+    public function scopeSearch(Builder $query, $value): Builder
     {
-        return empty($value) ? self::query() : self::where("id", $value)
+        return empty($value) ? $query : $query->where("id", $value)
             ->orWhere("name", "LIKE", "%{$value}%")
             ->orWhere("email", "LIKE", "%{$value}%");
     }
