@@ -92,10 +92,10 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
     }
 
     // search functionality
-    public function scopeSearch(Builder $query, $value): Builder
+    public function scopeSearch(Builder $query, $value = null): Builder
     {
-        return empty($value) ? $query : $query->where("id", $value)
-            ->orWhere("name", "LIKE", "%{$value}%")
+        return empty($value) ? $query : $query->orWhere("name", "LIKE", "%{$value}%")
+            ->orWhere("username", "LIKE", "%{$value}%")
             ->orWhere("email", "LIKE", "%{$value}%");
     }
 

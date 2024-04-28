@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 
 Artisan::command('inspire', function () {
-    $admin = Role::findByName("super-admin");
-    $user = User::find(1);
+   /* $admin = Role::findByName("super-admin");
+    $user = User::find(2);
     $user->assignRole($admin);
-    $this->comment(Inspiring::quote());
+    $this->comment(Inspiring::quote());*/
 })->purpose('Display an inspiring quote')->hourly();
