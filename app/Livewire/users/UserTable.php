@@ -14,6 +14,11 @@ class UserTable extends Component
 {
     use WithPagination;
 
+    public array $selectAll = [];
+
+    public object $select;
+
+    public string $sortBy = "desc";
 
     #[Url(as: "role")]
     public string|null $role = null;
@@ -23,6 +28,9 @@ class UserTable extends Component
     #[Url(as: "q")]
     public null|string $search = null;
 
+    public int $perPage = 50;
+
+
     /**
      * @throws AuthorizationException
      */
@@ -31,20 +39,31 @@ class UserTable extends Component
         $this->authorize(['view-user', 'import-user', 'export-user',]);
     }
 
+
     public function removeSearchFilter()
     {
         $this->search = null;
-        $this->searching();
+        $this->getDataBySearchAndRole();
+    }
+
+    public function selectAll()
+    {
+
+    }
+
+    public function select()
+    {
+
     }
 
     private mixed $users = [];
 
-    public function searching()
+    public function getDataBySearchAndRole()
     {
-        if ($this->search == null && $this->role == null)
-            $this->users = [];
-        else
+        $this->role == null ?
+            $this->users = [] :
             $this->users = $this->getUserDataByRole();
+        return $this->users;
     }
 
     public function getUserDataByRole()
@@ -53,9 +72,11 @@ class UserTable extends Component
             $this->users = User::search($this->search)->whereHas("roles", function ($q) {
                 $q->where("name", $this->role);
             });
-            return $this->users->latest()->paginate();
+            return $this->users
+                ->orderBy("created_at", $this->sortBy)
+                ->paginate($this->perPage);
         } catch (\Exception $exception) {
-            abort(500);
+            abort(500, $exception->getMessage());
         }
     }
 
@@ -63,6 +84,9 @@ class UserTable extends Component
     {
         $roles = User::getRoles();
 
-        return view('admin.users.index')->with(compact("roles"))->layout("admin.layouts.layouts-panel");
+        $this->users = $this->getDataBySearchAndRole();
+
+        return view('admin.users.index')->with(compact("roles"))
+            ->layout("admin.layouts.layouts-panel");
     }
 }

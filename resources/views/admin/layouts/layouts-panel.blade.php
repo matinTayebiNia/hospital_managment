@@ -26,10 +26,13 @@
     <!-- bootstrap-daterangepicker -->
     <link href="{{asset("/vendor/panel/css/daterangepicker.css")}}" rel="stylesheet">
 
+
     <!-- Custom Theme Style -->
     <link href="{{asset("/vendor/panel/css/custom.min.css")}}" rel="stylesheet">
 
     @livewireStyles
+
+    @yield("styles")
 </head>
 <body class="nav-md">
 
@@ -125,7 +128,9 @@
 <!-- Custom Theme Scripts -->
 <script src="{{asset("/vendor/panel/js/custom.min.js")}}"></script>
 
-@yield("script")
+@yield("scripts")
+
 @livewireScripts
+
 </body>
 </html>

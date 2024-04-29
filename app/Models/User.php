@@ -71,7 +71,7 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
 
     public static function getRoles(): mixed
     {
-        return Role::latest()->get(['id', 'name', "as_name"]);
+        return Role::where("name","!=","patient")->latest()->get(['id', 'name', "as_name"]);
     }
 
     //name transformer
