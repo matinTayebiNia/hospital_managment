@@ -14,7 +14,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -43,6 +42,7 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
         "image",
         "created_by_id",
         "updated_by_id",
+        "religion",
         "status"
     ];
 

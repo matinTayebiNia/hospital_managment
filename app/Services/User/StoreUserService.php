@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Services\User;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Morilog\Jalali\CalendarUtils;
 
 class StoreUserService
@@ -21,12 +22,12 @@ class StoreUserService
      */
     public function handle(object $event): User
     {
-
         $request = $event->request;
+        $request->dob = Str::replace("/", "-", $request->dob);
         $imageName = $event->imageName . "/" . $request->image;
-        $dob = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->input("dob"))->format('Y/m/d');
+        $dob = CalendarUtils::createCarbonFromFormat('Y-m-d', $request->dob)->format('Y-m-d');
 
-        return User::updateOrCreate(["id" => $request->route("user_id")], [
+        return User::create([
             "title" => $request->gender == "Male" ? 'اقا' : "خانم ",
             'name' => $request->name,
             "username" => $request->username,

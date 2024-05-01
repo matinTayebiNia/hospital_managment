@@ -63,8 +63,18 @@
                     </li>
                 </ul>
                 <div class="clearfix"></div>
+                <div class="btn-group open">
+                    <button type="button" class="btn btn-default"> کارهای دسته جمعی</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#" wire:click="deleteUsers()">حذف</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
 
             <div class="x_content">
 
@@ -73,8 +83,8 @@
                         <thead>
                         <tr class="headings">
                             <th class="column-title">
-
-                                <input type="checkbox" id="selectAll" wire:click.prevent="selectAll">
+                                {{--                                id="selectAll" onclick="selectAll()"--}}
+                                <input type="checkbox" id="selectAll" onclick="selectAll()">
                                 <label for="selectAll">
                                     انتخاب همه
                                 </label>
@@ -90,10 +100,28 @@
                         </thead>
 
                         <tbody>
-                        @forelse($this->users as $user)
+                        @if($selectedPage)
                             <tr class="even pointer">
+                                <td colspan="7" class="alert alert-dismissible">
+                                    @unless($selectedAll==true)
+                                        <span
+                                            class="">   شما <strong>{{count($this->selected)}}</strong> کاربر از <strong>{{$users->total()}}</strong> کاربر را انتخاب کرده اید میخواهید همه کاربران را انتخاب کنید؟</span>
+                                        <button class=" btn-link" wire:click="selectAll">انتخاب همه</button>
+                                    @else
+                                        شما <strong>تمام({{$users->total()}})</strong> کاربران را انتخاب کرده اید.
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
+                        @forelse($users as $user)
+
+                            <tr class="even pointer ability_to_select " data-targetId="{{$user->id}}">
                                 <td>
-                                    <input type="checkbox" id="select" wire:click.prevent="select">
+                                    <input type="checkbox" wire:model="selected"
+                                           @click="Livewire.dispatch('update-selected')"
+                                           id="select-{{$user->id}}"
+                                           wire:key="select-{{$user->id}}"
+                                           value="{{$user->id}}">
                                 </td>
                                 <td class=" ">{{$user->name}}</td>
                                 <td class=" ">{{$user->username}}</td>
@@ -111,11 +139,8 @@
                                     </label>
                                 <td class=" last">
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-info">
-                                            مشاهده
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a class="btn btn-warning btn-sm">
+                                        <a href="{{route("panel.users.edit",$user->id)}}"
+                                           class="btn btn-warning btn-sm">
                                             ویرایش
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -143,77 +168,13 @@
                 </div>
                 <div class="In_solid"></div>
                 <div class="">
-                    @if(!empty($this->users))
-                        {{ $this->users->withQueryString('search')->links()}}
+                    @if(!empty($users))
+                        {{ $users->withQueryString('search')->links()}}
                     @endif
                 </div>
             </div>
 
         </div>
     </div>
-    @can("delete-user")
-        <div class="modal fade target-modal-lg" tabindex="-1" id="delete-modal" role="dialog" aria-hidden="true"
-             style="display: none;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">حذف کاربر</h4>
-                    </div>
-                    <div class="modal-body">
-                        <h4>ایا از حذف کاربر مورد نظر مطمعن هستید.</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                        <button type="button"  data-dismiss="modal" id="button-delete" class="btn btn-danger">بله حذف کن</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    @endcan
+    @include("admin.layouts.alerts",["target"=>"کاربر"])
 </div>
-
-
-@section("styles")
-    <link rel="stylesheet" href="{{asset("/vendor/panel/css/pnotify.css")}}">
-    <link rel="stylesheet" href="{{asset("/vendor/panel/css/pnotify.buttons.css")}}">
-    <link rel="stylesheet" href="{{asset("/vendor/panel/css/pnotify.nonblock.css")}}">
-@endsection
-
-@section("scripts")
-    <script src="{{asset("/vendor/panel/js/pnotify.js")}}"></script>
-    <script src="{{asset("/vendor/panel/js/pnotify.buttons.js")}}"></script>
-    <script src="{{asset("/vendor/panel/js/pnotify.nonblock.js")}}"></script>
-    <script>
-        $('#delete-modal').on('show.bs.modal', function (event) {
-            let userId = event.relatedTarget.getAttribute("data-userId");
-            let target = document.getElementById("button-delete");
-            target.setAttribute("wire:click", `destroy(${userId})`)
-        });
-        document.addEventListener('livewire:init', () => {
-           Livewire.on('delete-user', (event) => {
-                new PNotify({
-                    title: event.title,
-                    text: event.message,
-                    type: 'success',
-                    styling: 'bootstrap3'
-                });
-            });
-        });
-    </script>
-    @if(session("success"))
-        <script>
-            window.onload = function notifyAlert() {
-                new PNotify({
-                    title: 'انجام شد',
-                    text: '{{session("success")}}',
-                    type: 'success',
-                    styling: 'bootstrap3'
-                });
-            }
-        </script>
-    @endif
-@endsection

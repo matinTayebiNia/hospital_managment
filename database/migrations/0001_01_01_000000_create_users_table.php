@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->enum("gender", ["Male", "Female", "Not to Say"]);
             $table->date("dob");
             $table->integer("age")->default(0);
-            $table->integer("religion")->nullable();
+            $table->string("religion")->nullable();
             $table->text("address_1")->nullable();
             $table->text("address_2")->nullable();
             $table->string("image")->nullable();
