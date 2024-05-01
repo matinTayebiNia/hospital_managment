@@ -69,11 +69,6 @@ class User extends Authenticatable implements UpdatableAndCreatableInterface
         ];
     }
 
-    public static function getRoles(): mixed
-    {
-        return Role::where("name","!=","patient")->latest()->get(['id', 'name', "as_name"]);
-    }
-
     //name transformer
     protected function name(): Attribute
     {

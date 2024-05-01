@@ -37,7 +37,11 @@
                         <li class=""><a><i class="fa fa-user-plus"></i> منابع انسانی <span
                                     class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu" style="">
-                                <li><a href="{{route("panel.users")}}">کاربران</a></li>
+
+                                <li><a href="{{route("panel.users.index")}}">کاربران</a></li>
+                                @can("create-user")
+                                    <li><a href="{{route("panel.users.create")}}">ساخت کاربر جدید</a></li>
+                                @endcan
                             </ul>
                         </li>
                     @endcanany

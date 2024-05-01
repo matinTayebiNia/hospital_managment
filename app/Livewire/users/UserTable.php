@@ -30,6 +30,14 @@ class UserTable extends Component
 
     public int $perPage = 50;
 
+    public int $userId = 0;
+
+    public function changeStatus(User $user, $status)
+    {
+        $updateStatus = $status == "0" ? 1 : 0;
+
+        $user->update(["status" => $updateStatus]);
+    }
 
     /**
      * @throws AuthorizationException
@@ -82,11 +90,23 @@ class UserTable extends Component
 
     public function render(): View
     {
-        $roles = User::getRoles();
+        $roles = getRoles();
 
         $this->users = $this->getDataBySearchAndRole();
-
         return view('admin.users.index')->with(compact("roles"))
             ->layout("admin.layouts.layouts-panel");
     }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize("delete-user");
+        if (auth()->user()->id != $user->id) {
+            $user->delete();
+            $this->dispatch('delete-user', title: "حذف شد", message: "کاربر با موفقیت حذف شد");
+        }
+    }
+
 }

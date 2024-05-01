@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -13,7 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::create([
+            "title" => "اقا",
+            "name" => "متین طیبی نیا",
+            "password" => Hash::make("12345678"),
+            "username" => "matinTayebnia",
+            "email" => "matintayebinia@gmail.com",
+            "gender" => "Male",
+            "dob" => Carbon::create("2001", 4, 6),
+
+        ]);
 //        $this->call(PermissionSeeder::class);
         $this->call(HospitalSettingSeeder::class);
         $this->call(RolesAndPermissionsSeeder::class);

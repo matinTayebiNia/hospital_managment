@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Morilog\Jalali\CalendarUtils;
 
 class RegisteredUserController extends Controller
 {
@@ -45,7 +46,7 @@ class RegisteredUserController extends Controller
             "username" => $request->username,
             'email' => $request->email,
             "gender" => $request->gender,
-            "dob" => $request->dob,
+            "dob" =>  CalendarUtils::createCarbonFromFormat('Y/m/d', $request->dob)->format('Y/m/d'),
             'password' => Hash::make($request->password),
         ]);
 
