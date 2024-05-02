@@ -45,6 +45,18 @@
                             </ul>
                         </li>
                     @endcanany
+                    @canany([ "create-ward",
+            "import-wards",
+            "export-wards",
+            "view-wards",
+            "edit-ward",
+            "delete-ward",])
+                        <li><a><i class="fa fa-wheelchair"></i>اتاق ها و بخش ها<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="{{route("panel.wards.index")}}"> بخش ها</a></li>
+                            </ul>
+                        </li>
+                    @endcan
                 </ul>
             </div>
         </div>

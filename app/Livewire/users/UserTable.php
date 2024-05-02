@@ -2,44 +2,21 @@
 
 namespace App\Livewire\users;
 
+use App\Helper\Traits\FilterAndSelectedProperty;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\WithPagination;
 use function view;
 
 class UserTable extends Component
 {
-    use WithPagination;
-
-    public int $selectedCount;
-
-    public bool $selectedAll = false;
-
-    public mixed $selected = [];
-
-    private mixed $users = [];
-
-    public bool $selectedPage = false;
-
-    public string $sortBy = "desc";
+    use FilterAndSelectedProperty;
 
     #[Url(as: "role")]
     public string|null $role = null;
-
-    /**
-     * @var mixed|string
-     */
-    #[Url(as: "q")]
-    public null|string $search = null;
-
-    public int $perPage = 2;
-
-    public int $userId = 0;
-
 
     /**
      * @throws AuthorizationException
@@ -71,11 +48,11 @@ class UserTable extends Component
     }
 
 
-    public function getDataBySearchAndRole()
+    public function getDataBySearchAndRole(): mixed
     {
         return $this->role == null ?
             [] :
-            $this->getUserDataByRole();
+            $this->getUserDataByRole()->paginate($this->perPage);
     }
 
     public function getUserDataByRole()
@@ -95,7 +72,7 @@ class UserTable extends Component
     {
         $roles = getRoles();
 
-        $users = $this->getDataBySearchAndRole()->paginate($this->perPage);
+        $users = $this->getDataBySearchAndRole();
 
         return view('admin.users.index', compact("roles", "users"))
             ->layout("admin.layouts.layouts-panel");
@@ -135,6 +112,7 @@ class UserTable extends Component
     {
         try {
             if (count($this->selected) > 0) {
+                $this->authorize("delete-user");
                 User::destroy($this->selected);
                 $this->dispatch('alert', title: "حذف شد", message: "کاربر های انتخاب شده با موفقیت حذف شدند");
             }
@@ -150,18 +128,8 @@ class UserTable extends Component
     {
         try {
             $this->selectedAll = true;
-            $this->selected = $this->getDataBySearchAndRole()->pluck('id');
+            $this->selected = $this->getUserDataByRole()->pluck('id');
             $this->selectedCount = $this->selected->count();
-        } catch (\Exception $exception) {
-            throw new $exception;
-        }
-    }
-
-    #[On("update-selected")]
-    public function selectedChange()
-    {
-        try {
-            $this->selectedAll = $this->selectedCount === count($this->selected);
         } catch (\Exception $exception) {
             throw new $exception;
         }
@@ -177,7 +145,7 @@ class UserTable extends Component
         try {
             if ($selected) {
                 $this->selectedPage = true;
-                $this->selected = $this->getDataBySearchAndRole()->paginate($this->perPage)->pluck("id");
+                $this->selected = $this->getUserDataByRole()->paginate($this->perPage)->pluck("id");
             } else {
                 $this->selectedPage = false;
                 $this->selected = [];
@@ -188,5 +156,6 @@ class UserTable extends Component
 
 
     }
+
 
 }

@@ -352,6 +352,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'import-department',
             'export-department',
 
+            //wards
+            "create-ward",
+            "import-wards",
+            "export-wards",
+            "view-wards",
+            "edit-ward",
+            "delete-ward",
+
             // operation Module Control
             'operation-module-control',
             'create-operation',
