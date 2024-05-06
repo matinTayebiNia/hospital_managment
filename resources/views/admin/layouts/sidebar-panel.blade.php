@@ -46,17 +46,65 @@
                         </li>
                     @endcanany
                     @canany([ "create-ward",
-            "import-wards",
-            "export-wards",
-            "view-wards",
-            "edit-ward",
-            "delete-ward",])
-                        <li><a><i class="fa fa-wheelchair"></i>اتاق ها و بخش ها<span class="fa fa-chevron-down"></span></a>
+                        "import-wards",
+                        "export-wards",
+                        "view-wards",
+                        'bed-module-control',
+                        'create-bed',
+                        'view-bed',
+                        'update-bed',
+                        'delete-bed',
+                        'bulk-delete-bed',
+                        'import-bed',
+                        'export-bed',
+                        'allocate-bed',
+                        "edit-ward",
+                        "delete-ward",])
+                        <li>
+                            <a><i class="fa fa-plus-circle"></i>مدیریت منابع بهداشت
+                                <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="{{route("panel.wards.index")}}"> بخش ها</a></li>
+                                @canany(['bed-module-control',
+                         'create-bed',
+                         'update-bed',
+                         'delete-bed',
+                         'bulk-delete-bed',
+                           'view-bed',
+                         'import-bed',
+                         'export-bed',
+                         'allocate-bed',])
+                                    <li><a><i class="fa fa-bed "></i><span>تخت ها</span> <span
+                                                class="fa fa-chevron-down"></span></a>
+
+                                        <ul class="nav child_menu">
+                                            <li><a href="{{route("panel.beds.index")}}"> نمایش تخت ها</a></li>
+                                            <li><a href="{{route("panel.bedTypes.index")}}"> ثبت / نمایش نوع تخت </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcanany
+                                @canany(['room-module-control',
+                                'create-room',
+                                'update-room',
+                                'delete-room',
+                                'bulk-delete-room',
+                                'view-room',
+                                'import-room',
+                                'export-room',])
+                                    <li><a><i class="fa fa-bed "></i><span>اتاق ها</span> <span
+                                                class="fa fa-chevron-down"></span></a>
+
+                                        <ul class="nav child_menu">
+                                            <li><a href="{{route("panel.rooms.index")}}"> نمایش اتاق ها</a></li>
+                                            <li><a href="{{route("panel.roomTypes.index")}}"> ثبت / نمایش نوع اتاق </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                @endcanany
                             </ul>
                         </li>
-                    @endcan
+                    @endcanany
                 </ul>
             </div>
         </div>

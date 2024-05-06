@@ -69,7 +69,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <a href="#" wire:click="deleteWards()">حذف</a>
+                            <a href="#" wire:click="deleteSelected()">حذف</a>
                         </li>
                     </ul>
                 </div>
@@ -82,7 +82,6 @@
                         <thead>
                         <tr class="headings">
                             <th class="column-title">
-                                {{--                                id="selectAll" onclick="selectAll()"--}}
                                 <input type="checkbox" id="selectAll" onclick="selectAll()">
                                 <label for="selectAll">
                                     انتخاب همه
@@ -114,7 +113,7 @@
 
                             <tr class="even pointer ability_to_select " data-targetId="{{$ward->id}}">
                                 <td>
-                                    <input type="checkbox" wire:model="selected"
+                                    <input type="checkbox" id="select-{{$ward->id}}" value="{{$ward->id}}" wire:model="selected"
                                            @click="Livewire.dispatch('update-selected')"
                                            wire:key="select-{{$ward->id}}">
                                 </td>
@@ -130,7 +129,7 @@
                                             ویرایش
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        @can("delete-user")
+                                        @can("delete-ward")
                                             <button data-toggle="modal" data-userId="{{$ward->id}}"
                                                     data-target=".target-modal-lg"
                                                     class="btn btn-danger btn-sm">

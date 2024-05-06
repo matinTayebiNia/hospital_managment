@@ -262,6 +262,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'export-bed',
             'allocate-bed',
 
+            // bed Module Control
+            'room-module-control',
+            'create-room',
+            'update-room',
+            'delete-room',
+            'bulk-delete-room',
+            'view-room',
+            'import-room',
+            'export-room',
+
             // treatment Module Control
             'treatment-module-control',
             'create-treatment',

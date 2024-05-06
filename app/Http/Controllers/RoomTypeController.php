@@ -2,42 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoomTypeRequest;
 use App\Models\RoomType;
-use App\Http\Requests\StoreRoomTypeRequest;
-use App\Http\Requests\UpdateRoomTypeRequest;
+use Illuminate\Support\Facades\Gate;
 
 class RoomTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        try {
+            if (Gate::allows("create-room")) {
+                return view("admin.roomType.create");
+            }
+            abort(403, "شما اجازه دسترسی ندارید");
+        } catch (\Exception $exception) {
+            abort(500, $exception->getMessage());
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoomTypeRequest $request)
+    public function store(RoomTypeRequest $request)
     {
-        //
-    }
+        try {
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RoomType $roomType)
-    {
-        //
+            RoomType::create($request->all());
+
+            return redirect(route("panel.roomTypes.index"))
+                ->with("success", "نوع اتاق با موفقیت ثبت شد.");
+
+        } catch (\Exception $exception) {
+            abort(500, $exception->getMessage());
+        }
     }
 
     /**
@@ -45,22 +45,31 @@ class RoomTypeController extends Controller
      */
     public function edit(RoomType $roomType)
     {
-        //
+        try {
+            if (Gate::allows('update-room')) {
+                return view("admin.roomType.edit", compact("roomType"));
+            }
+            abort(403, "شما اجازه دسترسی ندارید.");
+        } catch (\Exception $exception) {
+            abort(500, $exception->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoomTypeRequest $request, RoomType $roomType)
+    public function update(RoomTypeRequest $request, RoomType $roomType)
     {
-        //
+        try {
+
+            $roomType->update($request->all());
+
+            return redirect(route("panel.roomTypes.index"))
+                ->with("success", "نوع اتاق با موفقیت ویرایش شد.");
+
+        } catch (\Exception $exception) {
+            abort(500, $exception->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(RoomType $roomType)
-    {
-        //
-    }
 }

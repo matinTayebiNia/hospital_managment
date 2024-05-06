@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Services\Helper;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Services\User\StoreUserService;
 use App\Services\User\UpdateUserService;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 use Morilog\Jalali\CalendarUtils;
 use Spatie\Permission\Models\Permission;
 
@@ -32,7 +31,7 @@ class UserController extends Controller
 
             if (Gate::allows("create-user")) {
 
-                $imageName = $this->getImage($request);
+                $imageName = Helper::storeAndGetImagePath($request);
 
                 $data = (object)["imageName" => $imageName, "request" => $request];
 
@@ -70,7 +69,7 @@ class UserController extends Controller
         try {
             if (Gate::allows("user-update")) {
 
-                $imageName = $this->getImage($request);
+                $imageName = Helper::storeAndGetImagePath($request);
 
                 $data = (object)["imageName" => $imageName, "request" => $request, "user" => $user];
 
@@ -86,23 +85,5 @@ class UserController extends Controller
         } catch (\Exception $exception) {
             abort(500, $exception->getMessage());
         }
-    }
-
-    /**
-     * @param CreateUserRequest $request
-     * @return string
-     */
-    private function getImage(mixed $request): ?string
-    {
-        $imageName = null;
-
-        if ($request->hasFile("image")) {
-            $year = Carbon::now()->year;
-            $month = Carbon::now()->month;
-            $day = Carbon::now()->day;
-            $imageName = $year . '/' . $month . "/" . $day;
-            Storage::disk("public")->put($imageName, $request->image);
-        }
-        return $imageName;
     }
 }

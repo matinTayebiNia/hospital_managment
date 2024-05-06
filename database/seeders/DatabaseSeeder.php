@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             "title" => "اقا",
             "name" => "متین طیبی نیا",
             "password" => Hash::make("12345678"),
@@ -24,14 +25,11 @@ class DatabaseSeeder extends Seeder
             "email" => "matintayebinia@gmail.com",
             "gender" => "Male",
             "dob" => Carbon::create("2001", 4, 6),
-
         ]);
 //        $this->call(PermissionSeeder::class);
         $this->call(HospitalSettingSeeder::class);
         $this->call(RolesAndPermissionsSeeder::class);
-        /* User::factory()->create([
-             'name' => 'Test User',
-             'email' => 'test@example.com',
-         ]);*/
+        $admin = Role::findByName("super-admin");
+        $user->assignRole($admin);
     }
 }

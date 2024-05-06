@@ -18,6 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @method static User find(int $int)
+ * @method static Builder search(string $search)
  */
 class User extends Authenticatable implements UpdatableAndCreatableInterface
 {

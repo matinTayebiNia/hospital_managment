@@ -24,7 +24,7 @@ class UpdateUserService
 
         $request = $event->request;
         $request->dob = Str::replace("/", "-", $request->dob);
-        $imageName = $event->imageName . "/" . $request->image;
+        $imageName = $event->imageName;
         $dob = CalendarUtils::createCarbonFromFormat('Y-m-d', $request->dob)->format('Y-m-d');
         $event->user->update(
             [
@@ -34,7 +34,7 @@ class UpdateUserService
                 'email' => $request->email,
                 "gender" => $request->gender,
                 "dob" => $dob,
-                "image" => $imageName,
+                "image" => $imageName == null ? $event->user->image : $imageName,
                 "religion" => $request->religion,
                 "address_1" => $request->address_1,
                 "age" => $request->age,

@@ -55,14 +55,11 @@ class WardController extends Controller
     public function update(WardRequest $request, Ward $ward)
     {
         try {
-            if (Gate::allows("edit-ward")) {
 
                 $ward->update($request->all());
 
                 return redirect(route("panel.wards.index"))
                     ->with("success", "بخش مورد نظر با موفقیت ویرایش شد");
-            }
-            abort(403, "شما اجازه دسترسی ندارید");
         } catch (\Exception $exception) {
             abort(500);
         }

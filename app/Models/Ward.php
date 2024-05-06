@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @method static Builder search(string $search)
+ */
 class Ward extends Model implements UpdatableAndCreatableInterface
 {
     use HasFactory, UpdatableAndCreatableTrait;

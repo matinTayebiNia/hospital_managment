@@ -3,15 +3,19 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
-class UpdateBedTypeRequest extends FormRequest
+class BedTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->method() == "post" ?
+            Gate::allows("create-bed")
+            : Gate::allows('update-bed');
     }
 
     /**
@@ -22,7 +26,9 @@ class UpdateBedTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => ["required", "string", "max:225"],
+            "code" => ["required", "string", "max:225"],
+            "status" => ["required", Rule::in(["0", "1"])]
         ];
     }
 }

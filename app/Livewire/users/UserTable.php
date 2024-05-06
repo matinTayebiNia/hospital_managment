@@ -2,17 +2,21 @@
 
 namespace App\Livewire\users;
 
-use App\Helper\Traits\FilterAndSelectedProperty;
+use App\Http\HttpHelper\Interfaces\HandelFetchDataTableLivewireInterface;
+use App\Http\HttpHelper\Traits\FilterAndSelectedProperty;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\On;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use function view;
 
-class UserTable extends Component
+class UserTable extends Component implements HandelFetchDataTableLivewireInterface
 {
+    // todo change  method names in view
     use FilterAndSelectedProperty;
 
     #[Url(as: "role")]
@@ -40,39 +44,24 @@ class UserTable extends Component
         $this->authorize(['view-user', 'import-user', 'export-user',]);
     }
 
-
-    public function removeSearchFilter()
-    {
-        $this->search = null;
-        $this->getDataBySearchAndRole();
-    }
-
-
-    public function getDataBySearchAndRole(): mixed
+    /**
+     * @throws Exception
+     */
+    public function getFilterAndPaginateData(): LengthAwarePaginator|array
     {
         return $this->role == null ?
             [] :
-            $this->getUserDataByRole()->paginate($this->perPage);
+            $this->fetchData()->paginate($this->perPage);
     }
 
-    public function getUserDataByRole()
-    {
-        try {
-            $users = User::search($this->search)->whereHas("roles", function ($q) {
-                $q->where("name", $this->role);
-            });
-            return $users
-                ->orderBy("created_at", $this->sortBy);
-        } catch (\Exception $exception) {
-            abort(500, $exception->getMessage());
-        }
-    }
-
+    /**
+     * @throws Exception
+     */
     public function render(): View
     {
         $roles = getRoles();
 
-        $users = $this->getDataBySearchAndRole();
+        $users = $this->getFilterAndPaginateData();
 
         return view('admin.users.index', compact("roles", "users"))
             ->layout("admin.layouts.layouts-panel");
@@ -81,81 +70,46 @@ class UserTable extends Component
     /**
      * @throws AuthorizationException
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
         $this->authorize("delete-user");
-        if (auth()->user()->id != $user->id) {
+        if (auth()->user()->id != $id) {
+            $user = User::find($id);
             $user->delete();
             $this->dispatch('alert', title: "حذف شد", message: "کاربر با موفقیت حذف شد");
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function deleteDataSelected()
-    {
-        try {
-            if (count($this->selected) > 0) {
-                User::destroy($this->selected);
-                $this->dispatch('alert', title: "حذف شد", message: "کاربر  با موفقیت حذف شد");
-            }
-        } catch (\Exception $exception) {
-            throw new $exception;
-        }
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function deleteUsers()
+    public function deleteSelected(): void
     {
         try {
             if (count($this->selected) > 0) {
                 $this->authorize("delete-user");
                 User::destroy($this->selected);
                 $this->dispatch('alert', title: "حذف شد", message: "کاربر های انتخاب شده با موفقیت حذف شدند");
+                $this->reset();
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new $exception;
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function selectAll()
+    public function fetchData(): Builder
     {
         try {
-            $this->selectedAll = true;
-            $this->selected = $this->getUserDataByRole()->pluck('id');
-            $this->selectedCount = $this->selected->count();
-        } catch (\Exception $exception) {
-            throw new $exception;
+            $users = User::search($this->search)->whereHas("roles", function ($q) {
+                $q->where("name", $this->role);
+            });
+            return $users
+                ->orderBy("created_at", $this->sortBy);
+        } catch (Exception $exception) {
+            throw new  $exception;
         }
     }
-
-    /**
-     * @throws \Exception
-     */
-    #[On("select-page")]
-    public function updatedSelectedPage($selected)
-    {
-
-        try {
-            if ($selected) {
-                $this->selectedPage = true;
-                $this->selected = $this->getUserDataByRole()->paginate($this->perPage)->pluck("id");
-            } else {
-                $this->selectedPage = false;
-                $this->selected = [];
-            }
-        } catch (\Exception $exception) {
-            throw new $exception;
-        }
-
-
-    }
-
-
 }

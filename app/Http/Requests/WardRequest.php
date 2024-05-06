@@ -13,7 +13,9 @@ class WardRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows("create-ward");
+        return $this->method() == "post" ?
+            Gate::allows("create-ward") :
+            Gate::allows("edit-ward");
     }
 
     /**
@@ -24,8 +26,8 @@ class WardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required" , "string", "max:225"],
-            "code" => ["required" , "string", "max:225"],
+            "name" => ["required", "string", "max:225"],
+            "code" => ["required", "string", "max:225"],
             "status" => ["required", Rule::in(["0", "1"])]
         ];
     }

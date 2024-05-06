@@ -24,7 +24,7 @@ class StoreUserService
     {
         $request = $event->request;
         $request->dob = Str::replace("/", "-", $request->dob);
-        $imageName = $event->imageName . "/" . $request->image;
+        $imageName = $event->imageName;
         $dob = CalendarUtils::createCarbonFromFormat('Y-m-d', $request->dob)->format('Y-m-d');
 
         return User::create([
